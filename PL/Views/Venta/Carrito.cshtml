@@ -1,0 +1,54 @@
+﻿@model ML.VentaProducto
+@{
+    ViewData["Title"] = "Carrito";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Productos</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr class="text-center">
+                        <td>Nombre</td>
+                        <td>Precio Unitario</td>
+                        <td>Descripción</td>
+                        <td>Cantidad</td>
+                        <td>Imagen</td>
+                        <td>Eliminar</td>
+                    </tr>
+                </thead>
+             <tbody>
+                 @foreach (ML.VentaProducto ventaproducto in Model.Producto.Productos)
+                    {
+                        <tr class="text-center">
+                            @Html.HiddenFor(model=> model.IdVentaProducto)
+                            @Html.HiddenFor(model=> model.Venta.IdVenta)
+                            @Html.HiddenFor(model=> model.Producto.IdProducto)
+                            <td>@ventaproducto.Producto.Nombre</td>
+                            <td>@ventaproducto.Producto.PrecioUnitario</td>
+                            <td>@ventaproducto.Producto.Descripcion</td>
+                            <td>@ventaproducto.Cantidad</td>
+                            @if (ventaproducto.Producto.Imagen != null)
+                            {
+                                <td><img src="data:image/jpeg;base64,@(ventaproducto.Producto.Imagen)" style=" height:100px; width:100px;" /></td>
+                            }
+                            else
+                            {
+                                <td> <img src="~/Img/sinimagen.png" style="height:150px; width:150px;" /></td>
+                            }
+                            
+                        </tr>
+                    }
+                </tbody>
+             </table>
+        </div>
+     </div>
+
+</div>

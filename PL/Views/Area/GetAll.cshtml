@@ -1,0 +1,51 @@
+﻿@model ML.Area
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Areas</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h5> Selecione el boton de "+" para añadir una nueva area, el boton amarillo para actualizar un area, y el boton rojo para eliminer a un area</h5>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <p class="text-right">@Html.ActionLink("+", "Form", "Proveedor", htmlAttributes: new { @class = "btn btn-success" })</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr class="text-center">
+                        <td>Editar</td>
+                        <td class="hidden">IdArea</td>
+                        <td>Nombre</td>
+                        <td>Eliminar</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ML.Area area in Model.Areas)
+                    {
+                        <tr class="text-center">
+                            <td><a class="btn btn-warning glyphicon glyphicon-edit" href="@Url.Action("Form", "Area", new { IdArea =area.IdArea })"></a></td>
+                            <td class="hidden">@area.IdArea </td>
+                            <td>@area.Nombre</td>
+                            <td><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Proveedor", new { IdArea =area.IdArea})" onclick="return confirm('Estas seguro que deseas eliminer este registro?')"></a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+ </div>

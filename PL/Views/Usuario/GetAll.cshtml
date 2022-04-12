@@ -1,0 +1,147 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2> Usuarios</h2>
+        </div>
+    </div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h5> Selecione el boton de "+" para añadir un nuevo Usuario, el boton amarillo para actualizar un usuario, y el boton rojo para eliminer a un usuario</h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <p class="text-right">@Html.ActionLink("+", "Form", "Usuario", htmlAttributes: new { @class = "btn btn-success" })</p>
+    </div>
+</div>
+
+
+    <div class="align-content-center">
+        @using(Html.BeginForm("GetAll","Usuario",FormMethod.Post, new { enctype = "multipart/form-data"}))
+            {
+            
+               <div class="col-md-3">
+                     <div class="input-group w-30">@* Agregar icono en bootrap 5 con el textbox*@
+                       <span class="input-group-text" id="basic-add1"><i class="bi bi-file-person-fill"></i></span>
+                     @Html.TextBoxFor(moedel => Model.Nombre, new { @class = "form-control",@id="txtNombre", autocomplete = "off",placeholder ="Nombre"})
+                     </div>
+                </div>
+             
+
+            
+            <div class="col-md-3">
+                    <div class="input-group w-30">@* Agregar icono en bootrap 5 con el textbox*@
+                       <span class="input-group-text" id="basic-add1"><i class="bi bi-file-person-fill"></i></span>
+                     @Html.TextBoxFor(moedel => Model.ApellidoPaterno, new { @class = "form-control",@id = "txtApellidoPaterno", autocomplete = "off",placeholder ="Apellido Paterno"} )
+                </div>
+             </div>
+
+            
+            <div class="col-md-3">
+                  <div class="input-group w-30">@* Agregar icono en bootrap 5 con el textbox*@
+                       <span class="input-group-text" id="basic-add1"><i class="bi bi-file-person-fill"></i></span>
+                     @Html.TextBoxFor(moedel => Model.ApellidoMaterno, new { @class = "form-control",@id = "txtApellidoMaterno", autocomplete = "off",placeholder ="ApellidoMaterno"} )
+                </div>
+             </div>
+
+             <div class= "from-goup">
+                 <div class="col-md-3">
+                     <input type="submit" value="Buscar" class="btn-primary btn-info"/>
+                 </div>
+              </div>
+            }
+        </div>
+
+
+    <br />
+    @if (Model.Usuarios.Count > 0)
+     {
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr class="text-center">
+                        <td>Editar</td>
+                        <td class="hidden">IdUsuario</td>
+                        <td>UserName</td>
+                        <td>Password</td>
+                        <td>Nombre</td>
+                        <td>Email</td>
+                        <td>FechaNacimieto</td>
+                        <td>Sexo</td>
+                        <td>Telefono</td>
+                        <td>Celular</td>
+                        <td>Estatus</td>
+                        <td>CURP</td>
+                        <td>ROL</td>
+                        <td>NombreRol</td>
+                        <td>IdDireccion</td>
+                        <td>Direcciòn</td>
+                        <td>Imagen</td>
+                        <td>Eliminar</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ML.Usuario Usuario in Model.Usuarios)
+                    {
+                        <tr class="text-center">
+                            <td><a class="btn btn-warning glyphicon glyphicon-edit" href="@Url.Action("Form", "Usuario", new { IdUsuario = Usuario.IdUsuario})"></a></td>
+                            <td class="hidden">@Usuario.IdUsuario </td>
+                            <td>@Usuario.UserName</td>
+                            <td>@Usuario.Password</td>
+                            <td>@Usuario.Nombre @Usuario.ApellidoPaterno @Usuario.ApellidoMaterno</td>
+                            <td>@Usuario.Email</td>
+                            <td>@Usuario.FechaNacimiento</td>
+                            <td>@Usuario.Sexo</td>
+                            <td>@Usuario.Telefono</td>
+                            <td>@Usuario.Celular</td>
+                            <td>
+                             @if (Usuario.Estatus == true)
+                            {
+                               <a href="@Url.Action("UpdateStatus", "Usuario", new { IdUsuario = Usuario.IdUsuario })"/> <img src="~/Img/Activo.jpg" style="height:150px; width:150px;"/> 
+                            }
+                            else
+                            {
+                                <a  href="@Url.Action("UpdateStatus", "Usuario", new { IdUsuario = Usuario.IdUsuario })"/> <img src="~/Img/Inactivo.jpg" style="height:150px; width:150px;" />
+                            }
+                           </td>
+                            <td>@Usuario.CURP</td>
+                            <td class="hidden">@Usuario.Rol.IdRol</td>
+                            <td>@Usuario.Rol.Nombre</td>
+                            <td class="hidden">@Usuario.Direccion.IdDireccion</td>
+                            <td>@Usuario.Direccion.Calle @Usuario.Direccion.NumeroExterior @Usuario.Direccion.NumeroInterior @Usuario.Direccion.Colonia.Nombre</td>
+                            @if (Usuario.Imagen != null)
+                            {
+                                <td><img src="data:image/jpeg;base64,@(Usuario.Imagen)" style=" height:100px; width:100px;" /></td>
+                            }
+                            else
+                            {
+                                <td> <img src="~/Img/sinimagen.png" style="height:150px; width:150px;" /></td>
+                            }
+                            <td><a class="btn btn-danger glyphicon glyphicon-trash" href="@Url.Action("Delete", "Usuario", new { IdUsuario = Usuario.IdUsuario })" onclick="return confirm('Estas seguro que deseas eliminer este registro?')"></a></td>
+                        </tr>
+                    }
+                </tbody>
+             </table>
+        </div>
+    </div>
+     }
+    else
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-danger" role="alert">
+                    No se encontraron registros sobre Alumnos
+                </div>
+            </div>
+        </div>
+    }
+</div>
